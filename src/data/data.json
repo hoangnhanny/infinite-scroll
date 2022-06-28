@@ -102,17 +102,7 @@
     },
     {
         "id":21,
-        "content": "Lorem ipsum, dolor sit amet consectetur adipisicing elit.",
-        "linkImageUser":"https://www.focus2move.com/wp-content/uploads/2020/01/Tesla-Roadster-2020-1024-03.jpg"
-    },
-    {
-        "id":22,
-        "content": "Lorem ipsum, dolor sit amet consectetur adipisicing elit.",
-        "linkImageUser":"https://www.focus2move.com/wp-content/uploads/2020/01/Tesla-Roadster-2020-1024-03.jpg"
-    },
-    {
-        "id":23,
-        "content": "Lorem ipsum, dolor sit amet consectetur adipisicing elit.",
+        "content": "so 21",
         "linkImageUser":"https://www.focus2move.com/wp-content/uploads/2020/01/Tesla-Roadster-2020-1024-03.jpg"
     }
 

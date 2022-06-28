@@ -1,59 +1,70 @@
 import React, { useState, useEffect, useRef } from "react";
 import data from "../data/data.json";
+import { Post } from "./model";
+import useInfinite from "./useInfinite";
 
 const getData = async (from: number, to: number) => {
   return data.slice(from, from + to);
 };
 
-interface Post {
-  id: number;
-  linkImageUser: string;
-  content: string;
-}
-
 const Feed = () => {
   const [post, setPost] = useState<Post[]>([]);
-  const botRef = useRef<HTMLDivElement>(null);
-  const [loadMore, setLoadMore] = useState<boolean>(false);
+  const postRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    console.log("run event");
-    if (!botRef.current) {
-      return;
-    }
-    const ab = new IntersectionObserver((entries) => {
-      for (const entry of entries) {
-        if (entry.isIntersecting) {
-          setLoadMore(true);
-        }
-      }
-    });
-    ab.observe(botRef.current);
-    return () => ab.disconnect();
-  }, [botRef.current]);
+  const [load, setLoad] = useInfinite(postRef, post);
+
+  // useEffect(() => {
+  //   if (!postRef.current) {
+  //     return;
+  //   }
+  //   if (loadMore) {
+  //     return;
+  //   }
+  //   const ab = new IntersectionObserver((entries) => {
+  //     for (const entry of entries) {
+  //       if (entry.isIntersecting) {
+  //         setLoadMore(true);
+  //       }
+  //     }
+  //   });
+  //   ab.observe(postRef.current);
+  //   return () => ab.disconnect();
+  // }, [post]);
 
   useEffect(() => {
     const fetchData = async () => {
       const fetch = await getData(post.length, 5);
+      console.log(fetch);
       if (fetch.length > 0) {
         setPost([...post, ...fetch]);
       }
     };
-    fetchData();
-    setLoadMore(false);
-  }, [loadMore]);
+    if (!load) {
+      fetchData();
+    }
+    setLoad(false);
+  }, [load]);
 
   return (
     <>
       <div>
         {post.map((item, index) => (
-          <div className="post" key={index}>
-            <img src={item.linkImageUser} alt="" />
-            <p>{item.content}</p>
+          <div key={index}>
+            {item.id === post.length - 1 ? (
+              <div
+                ref={postRef}
+                style={{ backgroundColor: "black", height: "20px" }}
+              ></div>
+            ) : (
+              ""
+            )}
+            <div className="post">
+              <img src={item.linkImageUser} alt="" />
+              <p>{item.content}</p>
+            </div>
           </div>
         ))}
       </div>
-      <div ref={botRef} style={{ height: "40px" }}></div>
     </>
   );
 };
